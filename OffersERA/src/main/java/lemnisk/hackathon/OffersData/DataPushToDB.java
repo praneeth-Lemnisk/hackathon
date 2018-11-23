@@ -12,10 +12,10 @@ public class DataPushToDB {
 		if(id==-1) {
 			MysqlDbWrapper.insertToCampaignCards(obj.getCampaignId(), obj.getCardType(), obj.getCardName());
 			int insertedId=getId(obj);
-			MysqlDbWrapper.insertToCardDetails(insertedId, obj.getCardName(), obj.getPlaceOfOffer(), obj.getAmount(), obj.getOfferPercentage(), obj.getStartDate(), obj.getEndDate(), obj.getMessage(), obj.getOfferDays(), obj.getOfferStartTime(), obj.getOfferEndTime(), obj.getMaxUsage());
+			MysqlDbWrapper.insertToCardDetails(insertedId, obj.getCardName(), obj.getPlaceOfOffer(), obj.getAmount(), obj.getOfferPercentage(), obj.getStartDate(), obj.getEndDate(), obj.getMessage(), obj.getOfferDays().toUpperCase(), obj.getOfferStartTime(), obj.getOfferEndTime(), obj.getMaxUsage());
 		}
 		else {
-			MysqlDbWrapper.insertToCardDetails(id, obj.getCardName(), obj.getPlaceOfOffer(), obj.getAmount(), obj.getOfferPercentage(), obj.getStartDate(), obj.getEndDate(), obj.getMessage(), obj.getOfferDays(), obj.getOfferStartTime(), obj.getOfferEndTime(), obj.getMaxUsage());
+			MysqlDbWrapper.insertToCardDetails(id, obj.getCardName(), obj.getPlaceOfOffer(), obj.getAmount(), obj.getOfferPercentage(), obj.getStartDate(), obj.getEndDate(), obj.getMessage(), obj.getOfferDays().toUpperCase(), obj.getOfferStartTime(), obj.getOfferEndTime(), obj.getMaxUsage());
 		}
 	}
 	
