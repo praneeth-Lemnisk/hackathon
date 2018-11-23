@@ -5,15 +5,15 @@ public class OffersDataClass {
 	private  String CardType;
 	private  String CardName;	
 	private  String PlaceOfOffer;	
-	private  int Amount; 	
-	private  int OfferPercentage;	
+	private  String Amount; 	
+	private  String OfferPercentage;	
 	private  String StartDate;
 	private  String EndDate;	
 	private  String Message;	
 	private  String OfferDays;	
 	private  String OfferStartTime;	
 	private  String OfferEndTime;	
-	private  int MaxUsage;
+	private  String MaxUsage;
 	
 	public  String getCardName() {
 		return CardName;
@@ -27,16 +27,16 @@ public class OffersDataClass {
 	public  void setPlaceOfOffer(String placeOfOffer) {
 		PlaceOfOffer = placeOfOffer;
 	}
-	public  int getAmount() {
+	public  String getAmount() {
 		return Amount;
 	}
-	public  void setAmount(int amount) {
+	public  void setAmount(String amount) {
 		Amount = amount;
 	}
-	public  int getOfferPercentage() {
+	public  String getOfferPercentage() {
 		return OfferPercentage;
 	}
-	public  void setOfferPercentage(int offerPercentage) {
+	public  void setOfferPercentage(String offerPercentage) {
 		OfferPercentage = offerPercentage;
 	}
 	public  String getStartDate() {
@@ -57,10 +57,10 @@ public class OffersDataClass {
 	public  void setOfferEndTime(String offerEndTime) {
 		OfferEndTime = offerEndTime;
 	}
-	public  int getMaxUsage() {
+	public  String getMaxUsage() {
 		return MaxUsage;
 	}
-	public  void setMaxUsage(int maxUsage) {
+	public  void setMaxUsage(String maxUsage) {
 		MaxUsage = maxUsage;
 	}
 	public  String getOfferStartTime() {
@@ -70,7 +70,7 @@ public class OffersDataClass {
 		OfferStartTime = offerStartTime;
 	}
 	public  String getOfferDays() {
-		return OfferDays;
+		return OfferDays.toUpperCase();
 	}
 	public  void setOfferDays(String offerDays) {
 		OfferDays = offerDays;
