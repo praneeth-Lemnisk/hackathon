@@ -25,16 +25,36 @@ public class MysqlDbWrapper {
       System.exit(2);
     }
   }
+  
+  public static void runQuery(String query) {
+	  	Connection conn = null;
+	    ResultSet resultSet = null;
+	    Statement statement = null;
+	    try {
+	    	conn = DriverManager.getConnection("jdbc:mysql://10.20.0.4:3306/hackathon","root","hackathon");
+	      if (conn != null) {
+	    	  System.out.println("Database connection established.");
+	    	  statement = conn.createStatement();
+	    	  System.out.println(query);
+	    	  statement.executeUpdate(query);
 
-  public static List<Map<String, Object>> getResult(String dbUrl, String dbUserName,
-      String dbPassword, String query) {
+	      } 
+	      else {
+	       System.out.println("Database connection could not be established for getting result for query: {} "+query);
+	      }
+	    } catch (Exception e) {
+	     System.out.println("Error in getting result for query: {} "+query+" "+e);
+	    } 
+  }
+  
+  public static List<Map<String, Object>> getResult(String query) {
     Connection conn = null;
     ResultSet resultSet = null;
     Statement statement = null;
     List<Map<String, Object>> list = null;
 
     try {
-      conn = DriverManager.getConnection(dbUrl, dbUserName, dbPassword);
+    	conn = DriverManager.getConnection("jdbc:mysql://10.20.0.4:3306/hackathon","root","hackathon");
       if (conn != null) {
        System.out.println("Database connection established.");
         statement = conn.createStatement();
@@ -83,91 +103,66 @@ public class MysqlDbWrapper {
     return list;
   }
 
+  public static void insertToCampaignCards(String CampaignID, String CardType,String CardName) {
+	  Connection conn = null;
+	    PreparedStatement preparedStatement = null;
+	    String query ="Insert into CampaignCards(CampaignID,CardType,CardName) values (?,?,?)";
+
+	    try {	
+	    	conn = DriverManager.getConnection("jdbc:mysql://10.20.0.4:3306/hackathon","root","hackathon");
+	        if (conn != null) {
+	        	System.out.println("yess");
+	        }
+	      preparedStatement = conn.prepareStatement(query);
+	      preparedStatement.setString(1, CampaignID);
+	      preparedStatement.setString(2, CardType);
+	      preparedStatement.setString(3, CardName);
+	      preparedStatement.executeUpdate();
+	    } catch (SQLException ex) {
+	    System.out.println("Error in getting result for query: {} "+query+" "+ex);
+	    } finally {
+	      if (conn != null) {
+	        try {
+	          if (preparedStatement != null) {
+	            preparedStatement.close();
+	          }
+	          conn.close();
+	         System.out.println("Database connection terminated for query: {} "+query);
+	        } catch (Exception e) {
+	         System.out.println("Error closing database connection for query: {} "+query+" "+e);
+	        }
+	      }
+	    } 
+  }
   
-  public static void insertToScheduleMetaData(Integer engType, String engagementId,
-      String channelId, String segChannelId, String segmentId, String campaignId, String sendDate,
-      String endsOn, String endAfter, String repeatEvery, String repeatOn) {
+  public static void insertToCardDetails(Integer CampaignCardID, String CardName, String PlaceOfOffer, int Amount, Integer OfferPercentage, String StartDate,
+      String EndDate, String Message, String OfferDays, String OfferStartTime,String OfferEndTime,Integer MaxUsage) {
     Connection conn = null;
     PreparedStatement preparedStatement = null;
     String query =
-        "Insert into ScheduleMetaData(EngagementType, EngagementId, DMPChannelId, DMPSegmentChannelId, SegmentId, CampaignId, "
-            + "SendDate, EndsOn, EndsAfter, RepeatEvery, RepeatOn) values(?,?,?,?,?,?,?,?,?,?,?)";
+        "Insert into CardDetails(Id,CampaignCardID,CardName,PlaceOfOffer,Amount,OfferPercentage,StartDate,EndDate,Message,OfferDays,OfferStartTime,OfferEndTime,MaxUsage" + 
+        ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     try {
       conn = DriverManager.getConnection("jdbc:mysql://10.20.0.4/hackathon","root","hackathon");
       preparedStatement = conn.prepareStatement(query);
-      preparedStatement.setInt(1, engType);
-      preparedStatement.setString(2, engagementId);
-      preparedStatement.setString(3, channelId);
-      preparedStatement.setString(4, segChannelId);
-      preparedStatement.setString(5, segmentId);
-      preparedStatement.setString(6, campaignId);
-      preparedStatement.setString(7, sendDate);
-      preparedStatement.setString(8, endsOn);
-      preparedStatement.setString(9, endAfter);
-      preparedStatement.setString(10, repeatEvery);
-      preparedStatement.setString(11, repeatOn);
+      preparedStatement.setInt(1, CampaignCardID);
+      preparedStatement.setString(2, CardName);
+      preparedStatement.setString(3, PlaceOfOffer);
+      preparedStatement.setInt(4, Amount);
+      preparedStatement.setInt(5, OfferPercentage);
+      preparedStatement.setString(6, StartDate);
+      preparedStatement.setString(7, EndDate);
+      preparedStatement.setString(8, Message);
+      preparedStatement.setString(9, OfferDays);
+      preparedStatement.setString(10, OfferStartTime);
+      preparedStatement.setString(11, OfferEndTime);
+      preparedStatement.setInt(12, MaxUsage);
 
       preparedStatement.executeUpdate();
 
     } catch (SQLException ex) {
-      MonitoringMetrics.addToTsdb(SchedulerConstants.METRIC_ERRORS, 1,
-          SchedulerConstants.METRIC_COMPONENT_NAME, "insertToScheduleMetaData");
-     System.out.println("Error in getting result for query: {}", query, ex);
-    } finally {
-      if (conn != null) {
-        try {
-          if (preparedStatement != null) {
-            preparedStatement.close();
-          }
-          conn.close();
-         System.out.println("Database connection terminated for query: {}", query);
-        } catch (Exception e) {
-         System.out.println("Error closing database connection for query: {}", query, e);
-        }
-      }
-    }
-  }
-
-  public static void updateSent(String engagementId, String channelId, String lastSentStr) {
-    List<Map<String, Object>> result =
-        getResult(SchedulerConstants.properties.getString(SchedulerConstants.VRM_PROP_DB_URL),
-            SchedulerConstants.properties.getString(SchedulerConstants.VRM_PROP_DB_USERNAME),
-            SchedulerConstants.properties.getString(SchedulerConstants.VRM_PROP_DB_PASSWORD),
-            "Select LastSent, NumberOfPush from ScheduleMetaData where EngagementId = "
-                + engagementId + " and DMPChannelId = " + channelId);
-    Integer nop = 0;
-
-    if (result.isEmpty()) {
-     System.out.println("Schedule is not present to update for engagement id {},  channel id {}",
-          engagementId, channelId);
-      return;
-    }
-    Map<String, Object> object = result.get(0);
-    if (object.get("NumberOfPush") != null) {
-      nop = Integer.parseInt(object.get("NumberOfPush").toString());
-    }
-    nop++;
-
-    String query = "";
-    Connection conn = null;
-    PreparedStatement preparedStatement = null;, 
-
-    try {
-      conn = DriverManager.getConnection(
-          SchedulerConstants.properties.getString(SchedulerConstants.VRM_PROP_DB_URL),
-          SchedulerConstants.properties.getString(SchedulerConstants.VRM_PROP_DB_USERNAME),
-          SchedulerConstants.properties.getString(SchedulerConstants.VRM_PROP_DB_PASSWORD));
-      query =
-          "Update ScheduleMetaData set LastSent= ? ,NumberOfPush = ? where EngagementId = ? and DMPChannelId = ?";
-      preparedStatement = conn.prepareStatement(query);
-      preparedStatement.setString(1, lastSentStr);
-      preparedStatement.setInt(2, nop);
-      preparedStatement.setString(3, engagementId);
-      preparedStatement.setString(4, channelId);
-      preparedStatement.executeUpdate();
-    } catch (Exception ex) {
-     System.out.println("Error in getting result for query: {} "+query+" "+ex);
+    System.out.println("Error in getting result for query: {} "+query+" "+ex);
     } finally {
       if (conn != null) {
         try {
@@ -181,7 +176,5 @@ public class MysqlDbWrapper {
         }
       }
     }
-
   }
-
 }

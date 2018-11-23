@@ -5,30 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import lemnisk.hackathon.DB.*;
 
 public class CsvDataProcess 
 {
-	private static Map<Integer,OffersDataClass> OfferDetails= new HashMap<Integer,OffersDataClass>();
+	private static Map<Integer,OffersDataClass> OfferDetails= new HashMap<Integer,OffersDataClass>(); 
 	
     public void csvDataProcessFunction(String csvFile) {
 	    String cvsSplitBy = "	";// Tab separated file 
 	    try {
 	    	BufferedReader br = new BufferedReader(new FileReader(csvFile)); 
 	    	String line = br.readLine();
-	    	// Reading Headings 
-	    	String[] productCache=line.split(cvsSplitBy);
-//	    	String CardName="CardName";	
-//	    	String PlaceOfOffer="PlaceOfOffer";	
-//	    	String Amount="Amount";
-//	    	String OfferPercentage="OfferPercentage";
-//	    	String StartDate="StartDate";	
-//	    	String EndDate="EndDate";	
-//	    	String Message="Message";
-//	    	String OfferDays="OfferDays";
-//	    	String OfferStartTime="OfferStartTime";	
-//	    	String OfferEndTime="OfferEndTime";	
-//	    	String MaxUsage="MaxUsage";
+	    	String[] productCache=line.split(cvsSplitBy);//omitting Headings from csv
 	    	// Data insertion
 	    	int count=1;
 	    	while ((line = br.readLine()) != null) {
@@ -39,15 +27,15 @@ public class CsvDataProcess
 	            obj.setCardType(productCache[1].toUpperCase());
 	    		obj.setCardName(productCache[2].toUpperCase());
 	            obj.setPlaceOfOffer(productCache[3]);
-	            obj.setAmount(productCache[4]);
-	            obj.setOfferPercentage(productCache[5]);
+	            obj.setAmount(Integer.parseInt(productCache[4]));
+	            obj.setOfferPercentage(Integer.parseInt(productCache[5]));
 	            obj.setStartDate(productCache[6]);
 	            obj.setEndDate(productCache[7]);
 	            obj.setMessage(productCache[8]);
 	            obj.setOfferDays(productCache[9]);
 	            obj.setOfferStartTime(productCache[10]);
 	            obj.setOfferEndTime(productCache[11]);
-	            obj.setMaxUsage(productCache[12]);
+	            obj.setMaxUsage(Integer.parseInt(productCache[12]));
 	            OfferDetails.put(count, obj);
 	            count++;
 	        }
@@ -58,9 +46,22 @@ public class CsvDataProcess
     }
 	
 	public static void main(String[] args) {
-	    CsvDataProcess a =new CsvDataProcess();
+	    // Clearing DB Before starting the process
+		String resetQuery="delete from CampaignCards";
+		MysqlDbWrapper.runQuery(resetQuery);
+		resetQuery="Alter table CampaignCards AUTO_INCREMENT=1";
+		MysqlDbWrapper.runQuery(resetQuery);
+		resetQuery="delete from CardDetails";
+		MysqlDbWrapper.runQuery(resetQuery);
+		resetQuery="Alter table CardDetails AUTO_INCREMENT=1";
+		MysqlDbWrapper.runQuery(resetQuery);
+		CsvDataProcess a =new CsvDataProcess();
 		a.csvDataProcessFunction("/home/paavan/Desktop/hdfctab");
-		System.out.println(OfferDetails.size());
+//		for(int i=1;i<=OfferDetails.size();i++) {
+//			DataPushToDB.pushToCampaignCards(OfferDetails.get(i));
+//		}
+		String query="Select *from CampaignCards";
+		System.out.println(MysqlDbWrapper.getResult(query));
     }    
     
 }

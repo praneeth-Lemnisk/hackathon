@@ -1,1 +1,4 @@
-/home/paavan/project/OffersERA/src/main/java/lemnisk/hackathon/OffersERA/App.java
+/home/paavan/project/git/hackathon/OffersERA/src/main/java/lemnisk/hackathon/OffersData/OffersDataClass.java
+/home/paavan/project/git/hackathon/OffersERA/src/main/java/lemnisk/hackathon/DB/MysqlDbWrapper.java
+/home/paavan/project/git/hackathon/OffersERA/src/main/java/lemnisk/hackathon/OffersData/CsvDataProcess.java
+/home/paavan/project/git/hackathon/OffersERA/src/main/java/lemnisk/hackathon/OffersData/DataPushToDB.java
