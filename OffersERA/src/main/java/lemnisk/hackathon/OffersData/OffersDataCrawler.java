@@ -8,7 +8,7 @@ import java.util.Map;
 import lemnisk.hackathon.DB.MysqlDbWrapper;
 
 public class OffersDataCrawler {
-	public static Map<String,OffersDataClass> presentDayOffersAndDetailsMap= new HashMap<String,OffersDataClass>();
+	public static Map<String,Map<String,OffersDataClass>> presentDayOffersAndDetailsMap= new HashMap<String,Map<String,OffersDataClass>>();
 	public static Map<Integer, String> IdToCampaignMapping=new HashMap<Integer, String>();
 	public static Map<Integer, String> IdToCardTypeMapping=new HashMap<Integer, String>();
 	
@@ -48,7 +48,9 @@ public class OffersDataCrawler {
             obj.setOfferStartTime(relavantDataMap.get(i).get("OfferStartTime").toString());
             obj.setOfferEndTime(relavantDataMap.get(i).get("OfferEndTime").toString());
             obj.setMaxUsage(relavantDataMap.get(i).get("MaxUsage").toString());
-            presentDayOffersAndDetailsMap.put(obj.getCampaignId()+"_"+obj.getCardName()+"_"+obj.getPlaceOfOffer(),obj);
+            Map <String,OffersDataClass> map1=new HashMap<String,OffersDataClass>();
+            map1.put(obj.getPlaceOfOffer(), obj);
+            presentDayOffersAndDetailsMap.put(obj.getCampaignId()+"_"+obj.getCardName(),map1);
 //            System.out.println(relavantDataMap.get(i).toString());
 //            System.out.println(obj.getCampaignId()+" "+obj.getCardType()+" "+obj.getCardName());
 		}

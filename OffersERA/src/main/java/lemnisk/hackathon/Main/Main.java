@@ -3,6 +3,8 @@ package lemnisk.hackathon.Main;
 import java.util.HashMap;
 import java.util.Map;
 import org.joda.time.DateTime;
+
+import co.lemnisk.Sender.MessageBuilder;
 import lemnisk.hackathon.OffersData.CsvDataProcess;
 import lemnisk.hackathon.OffersData.OffersDataCrawler;
 
@@ -40,6 +42,7 @@ public class Main {
 		System.out.println(OffersDataCrawler.presentDayOffersAndDetailsMap.keySet());;
 		// phase 3 --> Getting relavant User Profiles from the Db and store it in a DataStructure
 		
+		MessageBuilder msg=new MessageBuilder();
 		
 	}
 }

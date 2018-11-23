@@ -16,8 +16,10 @@ public class UserDataCrawler {
 		
 		String data = js.getString("3625");
 		
+		
 		JSONObject js1 = new JSONObject(data);
-//		System.out.println(js1.getString("nba"));
+		
+		System.out.println(js1.getString("nba"));
 		
 	}
 
