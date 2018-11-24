@@ -72,7 +72,7 @@ public class CollectClientData {
 		for(int i=0;i<queryResult.size();i++)
 		{
 			Map<String,Object> temp = queryResult.get(i);
-			List<OffersDataClass> tempData = getData((String)temp.get("CampaignDataUrl"),(String)temp.get("Id"));			
+			List<OffersDataClass> tempData = getData((String)temp.get("CampaignDataUrl"),Integer.toString((Integer)temp.get("Id")));			
 			for(OffersDataClass temp1 : tempData)
 			{
 				productData.add(temp1);

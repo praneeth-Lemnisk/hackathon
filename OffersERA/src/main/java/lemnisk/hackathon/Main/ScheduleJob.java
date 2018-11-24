@@ -8,7 +8,7 @@ import co.lemnisk.Sender.MessageBuilder;
 import lemnisk.hackathon.OffersData.CsvDataProcess;
 import lemnisk.hackathon.OffersData.OffersDataCrawler;
 
-public class Main {
+public class ScheduleJob {
 	
 	private static String timePattern = "HH:mm:ss";
 	private static String datePattern = "yyyy-MM-dd";
@@ -35,7 +35,12 @@ public class Main {
 		
 		// phase 2--> Getting relevant Data from the DB and store it in a DataStructure
 		// DataStructure will have key as campaignId_CardType_CardName and mapped to other offer details
-		DateTime currentDateTime=new DateTime("2018-11-27");
+		
+		
+		
+		
+		
+		DateTime currentDateTime=new DateTime("2018-11-30");
 		String currentDate=currentDateTime.toString(datePattern);
 		String currentDay=dayNameMap.get("day"+currentDateTime.getDayOfWeek());
 		OffersDataCrawler.relavantDataExtracter(currentDay, currentDate);

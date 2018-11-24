@@ -46,11 +46,20 @@
 	    <artifactId>json</artifactId>
 	    <version>20180813</version>
 	</dependency>
-	
 	<dependency>
 	    <groupId>com.mailjet</groupId>
 	    <artifactId>mailjet-client</artifactId>
 	    <version>4.0.1</version>
+	 </dependency>
+	<dependency>
+  			<groupId>com.aerospike</groupId>
+  			<artifactId>aerospike-client</artifactId>
+  			<version>3.1.9</version>
+	</dependency>
+	<dependency>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-lang3</artifactId>
+    		<version>3.3.2</version>
 	</dependency>
 	    
   </dependencies>

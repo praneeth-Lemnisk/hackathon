@@ -13,39 +13,41 @@ import lemnisk.hackathon.OffersData.OffersDataClass;
 import lemnisk.hackathon.OffersData.OffersDataCrawler;
 
 public class MessageBuilder {
-	public static Map<String,String[]> userData=new HashMap<String,String []>();
+	//public static Map<String,String[]> userData=new HashMap<String,String []>();
 	public static Map<String,Map<String,OffersDataClass>> presentDayOffersAndDetailsMap=OffersDataCrawler.presentDayOffersAndDetailsMap;
-	public static Map<String,List<Map<String, OffersDataClass>>> userEmailMap=new HashMap<String,List<Map<String, OffersDataClass>>>(); 
+	public static Map<String,List<Map<String, OffersDataClass>>> userEmailMap=new HashMap<String,List<Map<String, OffersDataClass>>>();
+	public static Map<String,List<String>> userData=new HashMap<String,List<String>>();
 	
 	static {
-		String str[]={"praneethkatragadda1997@gmail.com","paavan.praneeth@lemnisk.co"};
+		/*String str[]={"praneethkatragadda1997@gmail.com","paavan.praneeth@lemnisk.co"};
 		userData.put("3625_DINERS-CARD",str);
-		userData.put("4234_REWARDS-CARD",str);
+		userData.put("4234_REWARDS-CARD",str);*/
+		userData=UserCollector.getMap();
 		userDataBuilder();
 		messageBuilder();
 	}
 	public static void userDataBuilder() {
 		
-		for(Map.Entry<String, String[]> entry:userData.entrySet()) {
-			String []recepients=entry.getValue();
+		for(Map.Entry<String, List<String>> entry:userData.entrySet()) {
+			List<String> recepients=entry.getValue();
 			System.out.println(entry.getKey().toUpperCase());
 			Map<String, OffersDataClass> obj=presentDayOffersAndDetailsMap.get(entry.getKey().toUpperCase());
-			for(int i=0;i<recepients.length;i++) {
+			for(int i=0;i<recepients.size();i++) {
 				if(obj==null) {
 					break;
 				}
-				else if(userEmailMap.containsKey(recepients[i])) {
+				else if(userEmailMap.containsKey(recepients.get(i))) {
 					List<Map<String, OffersDataClass>>list=new ArrayList<Map<String,OffersDataClass>>();
-					list=userEmailMap.get(recepients[i]);
+					list=userEmailMap.get(recepients.get(i));
 					list.add(obj);
-					System.out.println(recepients[i]+" "+list.toString());
-					userEmailMap.put(recepients[i],list);
+					System.out.println(recepients.get(i)+" "+list.toString());
+					userEmailMap.put(recepients.get(i),list);
 				}
 				else {
 					List<Map<String, OffersDataClass>>list1=new ArrayList<Map<String,OffersDataClass>>();
 					list1.add(obj);
-					System.out.println(recepients[i]+" "+list1.toString());
-					userEmailMap.put(recepients[i],list1);
+					System.out.println(recepients.get(i)+" "+list1.toString());
+					userEmailMap.put(recepients.get(i),list1);
 				}
 			}
 		}
@@ -66,6 +68,7 @@ public class MessageBuilder {
 			}
 			try {
 //				SendEmail.SendMail(messageToSend,recepient);
+				System.out.println("Sending Message to Persons..........");
 				System.out.println(messageToSend+" "+recepient);
 				System.out.println();
 				System.out.println();
